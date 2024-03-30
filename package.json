@@ -1,0 +1,20 @@
+{
+  "name": "sk.sapo.dependency-injection",
+  "version": "1.0.0",
+  "displayName": "SInjection",
+  "description": "Simple Dependency Injection System",
+  "unity": "2022.1",
+  "unityRelease": "0b5",
+  "changelogUrl": "",
+  "licensesUrl": "",
+  "dependencies": {},
+  "keywords": [
+    "Dependency Injection",
+    "DI"
+  ],
+  "author": {
+    "name": "Sapo",
+    "email": "sapotrash@poul.sk",
+    "url": ""
+  }
+}
