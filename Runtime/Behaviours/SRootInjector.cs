@@ -9,6 +9,9 @@ using UnityEngine.SceneManagement;
 
 namespace Sapo.DI.Runtime.Behaviours
 {
+    /// <summary>
+    /// A root injector that initializes the dependency injection system and injects dependencies in the scene.
+    /// </summary>
     [HelpURL("https://github.com/sapo-creations/sk.sapo.dependency-injection")]
     [DisplayName("Root Injector")]
     [AddComponentMenu("Sapo/DI/Root Injector")]

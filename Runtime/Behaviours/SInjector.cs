@@ -7,6 +7,9 @@ using Object = UnityEngine.Object;
 
 namespace Sapo.DI.Runtime.Behaviours
 {
+    /// <summary>
+    /// A simple implementation of <see cref="ISInjector"/> that uses reflection to inject dependencies.
+    /// </summary>
     [AddComponentMenu("")]
     public class SInjector : MonoBehaviour, ISInjector
     {

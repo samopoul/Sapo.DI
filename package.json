@@ -1,7 +1,7 @@
 {
   "name": "sk.sapo.dependency-injection",
   "version": "1.0.0",
-  "displayName": "SInjection",
+  "displayName": "SInject",
   "description": "Simple Dependency Injection System",
   "unity": "2022.1",
   "unityRelease": "0b5",
