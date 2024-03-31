@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Sapo.DI.Runtime.Common;
-using Sapo.DI.Runtime.Interfaces;
+using Sapo.SInject.Runtime.Common;
+using Sapo.SInject.Runtime.Interfaces;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Sapo.DI.Runtime.Behaviours
+namespace Sapo.SInject.Runtime.Behaviours
 {
     /// <summary>
     /// A simple implementation of <see cref="ISInjector"/> that uses reflection to inject dependencies.

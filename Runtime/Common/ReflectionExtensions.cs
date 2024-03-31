@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Sapo.DI.Runtime.Attributes;
 
-namespace Sapo.DI.Runtime.Common
+namespace Sapo.SInject.Runtime.Common
 {
     internal static class ReflectionExtensions
     {
@@ -25,7 +24,7 @@ namespace Sapo.DI.Runtime.Common
             const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
                                        BindingFlags.FlattenHierarchy;
 
-            return type.GetFields(flags).Where(f => f.IsDefinedWithAttribute<SInject>());
+            return type.GetFields(flags).Where(f => f.IsDefinedWithAttribute<Attributes.SInject>());
         }
     }
 }

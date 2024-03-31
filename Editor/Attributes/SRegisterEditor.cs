@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Sapo.DI.Editor.Attributes
+namespace Sapo.SInject.Editor.Attributes
 {
     [CustomEditor(typeof(Component), true)]
     internal class SRegisterEditor : UnityEditor.Editor

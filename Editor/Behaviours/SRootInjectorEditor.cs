@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Sapo.DI.Editor.Common;
-using Sapo.DI.Runtime.Attributes;
-using Sapo.DI.Runtime.Behaviours;
-using Sapo.DI.Runtime.Common;
+using Sapo.SInject.Editor.Common;
+using Sapo.SInject.Runtime.Attributes;
+using Sapo.SInject.Runtime.Behaviours;
+using Sapo.SInject.Runtime.Common;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Sapo.DI.Editor.Behaviours
+namespace Sapo.SInject.Editor.Behaviours
 {
     [CustomEditor(typeof(SRootInjector))]
     internal class SRootInjectorEditor : UnityEditor.Editor

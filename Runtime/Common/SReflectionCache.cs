@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Sapo.DI.Runtime.Attributes;
-using Sapo.DI.Runtime.Interfaces;
+using Sapo.SInject.Runtime.Attributes;
+using Sapo.SInject.Runtime.Interfaces;
 using UnityEngine;
 
-namespace Sapo.DI.Runtime.Common
+namespace Sapo.SInject.Runtime.Common
 {
     internal class SReflectionCache : ISReflectionCache
     {

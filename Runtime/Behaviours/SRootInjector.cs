@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Sapo.DI.Runtime.Attributes;
-using Sapo.DI.Runtime.Common;
-using Sapo.DI.Runtime.Interfaces;
+using Sapo.SInject.Runtime.Attributes;
+using Sapo.SInject.Runtime.Common;
+using Sapo.SInject.Runtime.Interfaces;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Sapo.DI.Runtime.Behaviours
+namespace Sapo.SInject.Runtime.Behaviours
 {
     /// <summary>
     /// A root injector that initializes the dependency injection system and injects dependencies in the scene.

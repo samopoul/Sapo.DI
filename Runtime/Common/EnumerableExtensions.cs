@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sapo.DI.Runtime.Common
+namespace Sapo.SInject.Runtime.Common
 {
     internal static class EnumerableExtensions
     {

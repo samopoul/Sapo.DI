@@ -1,4 +1,4 @@
-namespace Sapo.DI.Runtime.Interfaces
+namespace Sapo.SInject.Runtime.Interfaces
 {
     /// <summary>
     /// Interface for handling the injection event in Sapo DI.

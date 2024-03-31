@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using UnityEngine;
 
-namespace Sapo.DI.Runtime.Behaviours
+namespace Sapo.SInject.Runtime.Behaviours
 {
     /// <summary>
     /// Scene Inject is a component that injects entire scene during scene load.

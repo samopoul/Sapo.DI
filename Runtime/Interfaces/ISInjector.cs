@@ -1,6 +1,6 @@
 using System;
 
-namespace Sapo.DI.Runtime.Interfaces
+namespace Sapo.SInject.Runtime.Interfaces
 {
     /// <summary>
     /// A simple interface for a sapo injector.
