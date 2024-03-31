@@ -1,4 +1,4 @@
 {
 	"name": "sk.sapo.dependency-injection.runtime",
-	"rootNamespace": "Sapo.SInject.Runtime"
+	"rootNamespace": "Sapo.DI.Runtime"
 }

@@ -1,6 +1,6 @@
 {
     "name": "sk.sapo.dependency-injection.editor",
-    "rootNamespace": "Sapo.SInject.Editor",
+    "rootNamespace": "Sapo.DI.Editor",
     "references": [
         "GUID:a2252aa5937ae420baa4f97ab83c8e2e"
     ],

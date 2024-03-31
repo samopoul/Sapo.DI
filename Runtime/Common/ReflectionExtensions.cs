@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Sapo.SInject.Runtime.Common
+namespace Sapo.DI.Runtime.Common
 {
     internal static class ReflectionExtensions
     {

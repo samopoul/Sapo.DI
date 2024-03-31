@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Sapo.SInject.Runtime.Interfaces
+namespace Sapo.DI.Runtime.Interfaces
 {
     internal interface ISReflectionCache
     {

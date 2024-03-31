@@ -16,5 +16,12 @@
     "name": "Sapo",
     "email": "sapotrash@poul.sk",
     "url": ""
-  }
+  },
+  "samples": [
+    {
+      "displayName": "ScriptableObject Service",
+      "description": "",
+      "path": "Samples~/ScriptableObjectService"
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using UnityEngine;
 
-namespace Sapo.SInject.Runtime.Behaviours
+namespace Sapo.DI.Runtime.Behaviours
 {
     /// <summary>
     /// Scene Inject is a component that injects entire scene during scene load.
@@ -9,10 +9,12 @@ namespace Sapo.SInject.Runtime.Behaviours
     [HelpURL("https://github.com/sapo-creations/sk.sapo.dependency-injection")]
     [DisplayName("Scene Inject")]
     [AddComponentMenu("Sapo/DI/Scene Inject")]
-    public class SSceneInject : MonoBehaviour
+    [DisallowMultipleComponent]
+    public sealed class SSceneInject : MonoBehaviour
     {
         private void Awake()
         {
+            Debug.Log("[Sapo.DI] Injecting scene.");
             var injector = FindObjectOfType<SRootInjector>();
             if (injector == null)
             {

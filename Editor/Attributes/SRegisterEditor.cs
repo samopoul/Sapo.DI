@@ -1,9 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Sapo.SInject.Editor.Attributes
+namespace Sapo.DI.Editor.Attributes
 {
-    [CustomEditor(typeof(Component), true)]
+    [CustomEditor(typeof(Object), true)]
     internal class SRegisterEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()

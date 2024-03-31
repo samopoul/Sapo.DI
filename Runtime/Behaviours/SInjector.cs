@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Sapo.SInject.Runtime.Common;
-using Sapo.SInject.Runtime.Interfaces;
+using Sapo.DI.Runtime.Common;
+using Sapo.DI.Runtime.Interfaces;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Sapo.SInject.Runtime.Behaviours
+namespace Sapo.DI.Runtime.Behaviours
 {
     /// <summary>
     /// A simple implementation of <see cref="ISInjector"/> that uses reflection to inject dependencies.
     /// </summary>
-    [AddComponentMenu("")]
-    public class SInjector : MonoBehaviour, ISInjector
+    public sealed class SInjector : ISInjector
     {
         private static ISReflectionCache _reflectionCache;
         internal static ISReflectionCache ReflectionCache
@@ -26,8 +25,13 @@ namespace Sapo.SInject.Runtime.Behaviours
             }
         }
 
+        private readonly ISInjector _parent;
         private readonly Dictionary<Type, object> _instances = new();
-        protected IEnumerable<object> RegisteredInstances => _instances.Values;
+        internal IEnumerable<object> RegisteredInstances => _instances.Values;
+
+        public SInjector() => _instances[typeof(ISInjector)] = this;
+
+        public SInjector(ISInjector parent) : this() => _parent = parent;
 
 
         public T Resolve<T>() => (T)Resolve(typeof(T));
@@ -52,17 +56,22 @@ namespace Sapo.SInject.Runtime.Behaviours
             return false;
         }
 
-        public bool TryResolve(Type type, out object instance)
+        private bool TryResolveInSelf(Type type, out object instance)
         {
             if (!_instances.TryGetValue(type, out instance)) return false;
             
             var isObjectOrActiveUnityObject = instance != null && (instance is not Object o || o);
             if (isObjectOrActiveUnityObject) return true;
-            
 
             _instances.Remove(type);
             instance = null;
             return false;
+        }
+        
+        public bool TryResolve(Type type, out object instance)
+        {
+            if (TryResolveInSelf(type, out instance)) return true;
+            return _parent?.TryResolve(type, out instance) ?? false;
         }
 
         public bool IsRegistered<T>() => IsRegistered(typeof(T));
@@ -86,7 +95,7 @@ namespace Sapo.SInject.Runtime.Behaviours
             if (type == null) throw new ArgumentNullException(nameof(type));
             if (instance == null) throw new ArgumentNullException(nameof(instance));
 
-            if (IsRegistered(type)) return false;
+            if (TryResolveInSelf(type, out _)) return false;
 
             _instances[type] = instance;
             return true;
@@ -111,7 +120,7 @@ namespace Sapo.SInject.Runtime.Behaviours
             foreach (var field in fields) field.SetValue(instance, Resolve(field.FieldType));
         }
 
-        protected void PerformSelfInjection()
+        internal void PerformSelfInjection()
         {
             foreach (var instance in _instances.Values) 
                 Inject(instance);

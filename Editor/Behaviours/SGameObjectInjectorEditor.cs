@@ -5,40 +5,30 @@ using UnityEngine;
 
 namespace Sapo.DI.Editor.Behaviours
 {
-    [CustomEditor(typeof(SRootInjector))]
-    internal class SRootInjectorEditor : UnityEditor.Editor
+    [CustomEditor(typeof(SGameObjectInjector))]
+    public class SGameObjectInjectorEditor : UnityEditor.Editor
     {
-        private SRootInjector _injector;
-        private SerializedProperty _makePersistent;
+        private SGameObjectInjector _injector;
         private RegistrableAssetsList _assetsToRegister;
-
-        private readonly PrefsBool _settingsFoldout = new("Sapo.DI.Editor.Behaviours.SRootInjectorEditor._settingsFoldout");
-        private readonly PrefsBool _runtimeInfoFoldout = new("Sapo.DI.Editor.Behaviours.SRootInjectorEditor._runtimeInfoFoldout");
+        
+        private readonly PrefsBool _settingsFoldout = new("Sapo.DI.Editor.Behaviours.SGameObjectInjectorEditor._settingsFoldout");
+        private readonly PrefsBool _runtimeInfoFoldout = new("Sapo.DI.Editor.Behaviours.SGameObjectInjectorEditor._runtimeInfoFoldout");
         private InjectorRuntimeInfo _runtimeInfo;
 
         private void OnEnable()
         {
-            _injector = (SRootInjector)target;
-
-            _makePersistent = serializedObject.FindProperty("makePersistent");
+            _injector = (SGameObjectInjector)target;
+            
             _assetsToRegister = new RegistrableAssetsList(serializedObject.FindProperty("assetsToRegister"));
             
             _settingsFoldout.Load();
             _runtimeInfoFoldout.Load();
         }
-        
-
-
-        public override bool RequiresConstantRepaint() => true;
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox(
-                "This component is a root injector that will be used to register and inject dependencies.",
-                MessageType.Info, true);
-            
             serializedObject.UpdateIfRequiredOrScript();
-
+            
             DrawSettingsGUI();
             DrawRuntimeGUI();
 
@@ -52,13 +42,11 @@ namespace Sapo.DI.Editor.Behaviours
 
             EditorGUI.indentLevel++;
 
-            EditorGUILayout.PropertyField(_makePersistent);
             _assetsToRegister.OnGUI();
             
             EditorGUI.indentLevel--;
-
         }
-
+        
         private void DrawRuntimeGUI()
         {
             var isPlaying = Application.IsPlaying(_injector);
@@ -74,10 +62,11 @@ namespace Sapo.DI.Editor.Behaviours
             
             _runtimeInfoFoldout.Value = EditorGUILayout.Foldout(_runtimeInfoFoldout.Value, "Runtime info", true);
             if (!_runtimeInfoFoldout.Value) return;
-            
+
             _runtimeInfo ??= new InjectorRuntimeInfo((SInjector)_injector.Injector);
             
             _runtimeInfo.OnGUI();
         }
+
     }
 }

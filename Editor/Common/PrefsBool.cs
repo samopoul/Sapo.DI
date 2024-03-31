@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace Sapo.SInject.Editor.Common
+namespace Sapo.DI.Editor.Common
 {
     internal class PrefsBool
     {

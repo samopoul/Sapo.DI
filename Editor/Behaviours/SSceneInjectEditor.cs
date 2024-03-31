@@ -1,8 +1,8 @@
-using Sapo.SInject.Runtime.Behaviours;
+using Sapo.DI.Runtime.Behaviours;
 using UnityEditor;
 using UnityEngine;
 
-namespace Sapo.SInject.Editor.Behaviours
+namespace Sapo.DI.Editor.Behaviours
 {
     [CustomEditor(typeof(SSceneInject))]
     internal class SSceneInjectEditor : UnityEditor.Editor

@@ -1,6 +1,6 @@
 using System;
 
-namespace Sapo.SInject.Runtime.Attributes
+namespace Sapo.DI.Runtime.Attributes
 {
     /// <summary>
     /// The SRegister attribute is used to mark Unity Components and ScriptableObjects that should be registered for dependency injection.

@@ -1,6 +1,6 @@
 using System;
 
-namespace Sapo.SInject.Runtime.Attributes
+namespace Sapo.DI.Runtime.Attributes
 {
     /// <summary>
     /// The SInject attribute is used to mark fields that should be injected.
