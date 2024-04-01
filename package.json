@@ -1,8 +1,8 @@
 {
   "name": "sk.sapo.dependency-injection",
   "version": "1.0.0",
-  "displayName": "SInjection",
-  "description": "Simple Dependency Injection System",
+  "displayName": "SInject",
+  "description": "SInject is a lightweight dependency injection framework for unity. It is designed to be simple and easy to use. It is based on the concept of injectors and services. It is designed to be used in a way that is easy to understand and use. It also includes a testing framework that makes it easy to write tests for your code. Make sure to check out the samples to see how to use it.",
   "unity": "2022.1",
   "unityRelease": "0b5",
   "changelogUrl": "",
@@ -14,7 +14,29 @@
   ],
   "author": {
     "name": "Sapo",
-    "email": "sapotrash@poul.sk",
+    "email": "",
     "url": ""
-  }
+  },
+  "samples": [
+    {
+      "displayName": "ScriptableObject Service",
+      "description": "This small sample shows registering and resolving scriptable objects as services. It demonstrates how to use scriptable objects as services and how to use them in your project.",
+      "path": "Samples~/ScriptableObjectService"
+    },
+    {
+      "displayName": "GameObject Injector",
+      "description": "This sample shows GameObject Injector use with root injector. It demonstrates multiple enclosed injectors and their relation to root injector. Make sure to check on GameObjectInjector Runtime info.",
+      "path": "Samples~/GameObjectInjector"
+    },
+    {
+      "displayName": "Scene Loading",
+      "description": "This sample shows the power of Root injector. It demonstrates loading scenes with dependencies. There is included single scene and additive scene loading.",
+      "path": "Samples~/SceneLoading"
+    },
+    {
+      "displayName": "Testing",
+      "description": "This sample shows how to use SInject in tests. It demonstrates how to use SInject in tests. Check out the test scripts and how they are using SInject.",
+      "path": "Samples~/Testing"
+    }
+  ]
 }
