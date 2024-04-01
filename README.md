@@ -1,4 +1,4 @@
-[![Asset Store](https://img.shields.io/badge/Unity-2019.4.0f1-blue.svg)](https://assetstore.unity.com/publishers/99093)
+[![Asset Store](https://img.shields.io/badge/Asset%20Store-1.0.0-blue.svg)](https://assetstore.unity.com/publishers/99093)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 # SInject
@@ -251,7 +251,7 @@ Here is a self-explanatory example of how to test a component that uses dependen
 ## Samples
 
 You can install samples via Unity Package Manager. Go to `Window/Package Manager`, select `In Project` tab and search for `SInject`.
-You will see `Samples` section where you can install samples. Here is the list of samples:
+You will see `Samples` section where you can install samples.
 
 
 
