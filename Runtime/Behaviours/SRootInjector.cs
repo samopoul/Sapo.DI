@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Sapo.DI.Runtime.Attributes;
 using Sapo.DI.Runtime.Common;
+using Sapo.DI.Runtime.Core;
 using Sapo.DI.Runtime.Interfaces;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace Sapo.DI.Runtime.Behaviours
 {
@@ -14,17 +17,24 @@ namespace Sapo.DI.Runtime.Behaviours
     /// </summary>
     [HelpURL("https://github.com/sapo-creations/sk.sapo.dependency-injection")]
     [DisplayName("Root Injector")]
-    [AddComponentMenu("Sapo/DI/Root Injector")]
+    [AddComponentMenu("")]
     [DisallowMultipleComponent]
     public sealed class SRootInjector : MonoBehaviour
     {
         [SerializeField] private bool makePersistent = true;
-        [SerializeField] private List<Object> assetsToRegister = new();
+        internal bool MakePersistent
+        {
+            get => makePersistent;
+            set => makePersistent = value;
+        }
         
+        [SerializeField] private List<Object> assetsToRegister = new();
         
         private static SRootInjector _instance;
         private readonly SInjector _injector = new();
-        internal ISInjector Injector => _injector;
+        internal SInjector Injector => _injector;
+
+        private bool _registerSelfComponents = false;
 
         private void Awake()
         {
@@ -44,7 +54,7 @@ namespace Sapo.DI.Runtime.Behaviours
             if (makePersistent) DontDestroyOnLoad(gameObject);
             _instance = this;
             
-            foreach (var rootInjector in FindObjectsOfType<SRootInjector>())
+            foreach (var rootInjector in FindObjectsOfType<SRootInjector>(true))
             {
                 if (rootInjector == this) continue;
                 
@@ -59,11 +69,13 @@ namespace Sapo.DI.Runtime.Behaviours
                 _injector.Register(sRegister.Type, asset);
             }
 
-            foreach (var handler in _injector.RegisteredInstances.OfType<ISInjectorRegisterHandler>()) handler.OnRegister(_injector);
+            foreach (var handler in assetsToRegister.OfType<ISInjectorRegisterHandler>()) handler.OnRegister(_injector);
             
             _injector.PerformSelfInjection();
 
-            foreach (var handler in _injector.RegisteredInstances.OfType<ISInjectorInjectHandler>()) handler.OnInject(_injector);
+            foreach (var handler in assetsToRegister.OfType<ISInjectorInjectHandler>()) handler.OnInject(_injector);
+
+            _registerSelfComponents = true;
         }
         
         internal void InjectScene(Scene scene)
@@ -90,18 +102,40 @@ namespace Sapo.DI.Runtime.Behaviours
                 injectHandlers.AddRange(root.GetComponentsInChildren<ISInjectorInjectHandler>(true));
             }
 
+
+            if (_registerSelfComponents)
+            {
+                foreach (var (componentT, registerT) in reflectionCache.RegistrableComponents)
+                foreach (var component in GetComponents(componentT))
+                    _injector.Register(registerT, component);
+                
+                registerHandlers.AddRange(GetComponents<ISInjectorRegisterHandler>());
+                injectHandlers.AddRange(GetComponents<ISInjectorInjectHandler>());
+            }
+
             foreach (var handler in registerHandlers) handler.OnRegister(_injector);
             
             foreach (var root in roots)
             foreach (var injectableComponentT in reflectionCache.InjectableComponents)
             foreach (var component in root.GetComponentsInChildren(injectableComponentT, true))
                 localInjectors.GetValueOrDefault(component.gameObject, _injector).Inject(component);
+
+            if (_registerSelfComponents)
+            {
+                foreach (var injectableComponentT in reflectionCache.InjectableComponents)
+                foreach (var component in GetComponents(injectableComponentT))
+                    _injector.Inject(component);    
+            }
             
             foreach (var handler in injectHandlers) handler.OnInject(_injector);
+
+            _registerSelfComponents = false;
         }
         
         internal void InjectGameObject(GameObject obj)
         {
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            
             Initialize();
             var reflectionCache = SInjector.ReflectionCache;
 

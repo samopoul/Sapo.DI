@@ -89,7 +89,7 @@ namespace Sapo.DI.Runtime.Interfaces
         /// </summary>
         /// <typeparam name="T">The type of the instance to unregister.</typeparam>
         /// <param name="instance">The instance to unregister.</param>
-        public void Unregister<T>(T instance);
+        public void Unregister<T>(object instance);
         
         /// <summary>
         /// Unregisters the specified instance of the specified type.

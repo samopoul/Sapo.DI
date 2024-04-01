@@ -1,9 +1,7 @@
 {
-    "name": "sk.sapo.depencency-injection.samples.scriptableobjectservice",
-    "rootNamespace": "Sapo.DI.Samples.ScriptableObjectService",
-    "references": [
-        "GUID:a2252aa5937ae420baa4f97ab83c8e2e"
-    ],
+    "name": "Sapo.DI.Runtime",
+    "rootNamespace": "Sapo.DI.Runtime",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

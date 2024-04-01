@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Sapo.DI.Runtime.Behaviours;
+using Sapo.DI.Runtime.Core;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;

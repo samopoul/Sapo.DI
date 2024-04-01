@@ -21,7 +21,7 @@ namespace Sapo.DI.Runtime.Attributes
     /// }
     /// </code>
     /// </example>
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public sealed class SRegister : Attribute
     {
         /// <summary>

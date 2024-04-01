@@ -5,7 +5,7 @@ using Sapo.DI.Runtime.Interfaces;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Sapo.DI.Runtime.Behaviours
+namespace Sapo.DI.Runtime.Core
 {
     /// <summary>
     /// A simple implementation of <see cref="ISInjector"/> that uses reflection to inject dependencies.
@@ -31,7 +31,7 @@ namespace Sapo.DI.Runtime.Behaviours
 
         public SInjector() => _instances[typeof(ISInjector)] = this;
 
-        public SInjector(ISInjector parent) : this() => _parent = parent;
+        public SInjector(SInjector parent) : this() => _parent = parent;
 
 
         public T Resolve<T>() => (T)Resolve(typeof(T));
@@ -70,6 +70,8 @@ namespace Sapo.DI.Runtime.Behaviours
         
         public bool TryResolve(Type type, out object instance)
         {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            
             if (TryResolveInSelf(type, out instance)) return true;
             return _parent?.TryResolve(type, out instance) ?? false;
         }
@@ -94,17 +96,24 @@ namespace Sapo.DI.Runtime.Behaviours
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             if (instance == null) throw new ArgumentNullException(nameof(instance));
+            if (!type.IsInstanceOfType(instance))
+                throw new ArgumentException("The instance type must be assignable to the specified type.");
 
             if (TryResolveInSelf(type, out _)) return false;
+            
+            var isDestroyedUnityObject = instance is Object o && !o;
+            if (isDestroyedUnityObject) return false;
 
             _instances[type] = instance;
             return true;
         }
 
-        public void Unregister<T>(T instance) => Unregister(typeof(T), instance);
+        public void Unregister<T>(object instance) => Unregister(typeof(T), instance);
         
         public void Unregister(Type type, object instance)
         {
+            if (instance == null) throw new ArgumentNullException(nameof(instance));
+            
             if (!TryResolve(type, out var i)) return;
             if (i != instance) return;
             

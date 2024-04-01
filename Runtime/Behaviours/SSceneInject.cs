@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Sapo.DI.Runtime.Interfaces;
 using UnityEngine;
 
 namespace Sapo.DI.Runtime.Behaviours
@@ -8,13 +9,23 @@ namespace Sapo.DI.Runtime.Behaviours
     /// </summary>
     [HelpURL("https://github.com/sapo-creations/sk.sapo.dependency-injection")]
     [DisplayName("Scene Inject")]
-    [AddComponentMenu("Sapo/DI/Scene Inject")]
+    [AddComponentMenu("")]
     [DisallowMultipleComponent]
-    public sealed class SSceneInject : MonoBehaviour
+    public sealed class SSceneInject : MonoBehaviour, ISInjectorRegisterHandler
     {
+        private bool _isInjected;
+        
+        void ISInjectorRegisterHandler.OnRegister(ISInjector injector) => _isInjected = true;
+        
         private void Awake()
         {
-            Debug.Log("[Sapo.DI] Injecting scene.");
+            if (_isInjected)
+            {
+                Debug.LogError("[Sapo.DI] Scene already injected. Make sure you have only one SSceneInject per scene.");
+                Destroy(gameObject);
+                return;
+            }
+            
             var injector = FindObjectOfType<SRootInjector>();
             if (injector == null)
             {

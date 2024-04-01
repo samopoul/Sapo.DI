@@ -20,7 +20,7 @@ namespace Sapo.DI.Runtime.Common
         {
             var component = typeof(Component);
 
-            var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(SafelyGetTypes)
+            var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.SafelyGetTypes())
                 .Where(t => component.IsAssignableFrom(t));
             
             var registrableComponents = new List<(Type componentType, Type registerType)>();
@@ -40,20 +40,6 @@ namespace Sapo.DI.Runtime.Common
             
             RegistrableComponents = registrableComponents.ToArray();
             InjectableComponents = injectableComponents.ToArray();
-        }
-
-        private IEnumerable<Type> SafelyGetTypes(Assembly assembly)
-        {
-            try
-            {
-                return assembly.GetTypes();
-            }
-            catch (Exception e)
-            {
-                // ignore
-            }
-
-            return Type.EmptyTypes;
         }
         
         public FieldInfo[] GetInjectFields(Type type)

@@ -75,7 +75,7 @@ namespace Sapo.DI.Editor.Behaviours
             _runtimeInfoFoldout.Value = EditorGUILayout.Foldout(_runtimeInfoFoldout.Value, "Runtime info", true);
             if (!_runtimeInfoFoldout.Value) return;
             
-            _runtimeInfo ??= new InjectorRuntimeInfo((SInjector)_injector.Injector);
+            _runtimeInfo ??= new InjectorRuntimeInfo(_injector.Injector);
             
             _runtimeInfo.OnGUI();
         }

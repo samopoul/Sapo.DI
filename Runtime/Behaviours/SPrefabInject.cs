@@ -9,19 +9,18 @@ namespace Sapo.DI.Runtime.Behaviours
     /// A GameObject Inject is a component that injects dependencies in the GameObject during game object instantiation.
     /// </summary>
     [HelpURL("https://github.com/sapo-creations/sk.sapo.dependency-injection")]
-    [DisplayName("GameObject Inject")]
-    [AddComponentMenu("Sapo/DI/GameObject Inject")]
+    [DisplayName("Prefab Inject")]
+    [AddComponentMenu("Sapo/DI/Prefab Inject")]
     [DisallowMultipleComponent]
-    public sealed class SGameObjectInject : MonoBehaviour, ISInjectorRegisterHandler
+    public sealed class SPrefabInject : MonoBehaviour, ISInjectorRegisterHandler
     {
-        private bool _skip;
+        private bool _isInjected;
         
-        
-        void ISInjectorRegisterHandler.OnRegister(ISInjector injector) => _skip = true;
+        void ISInjectorRegisterHandler.OnRegister(ISInjector injector) => _isInjected = true;
 
         private void Awake()
         {
-            if (_skip)
+            if (_isInjected)
             {
                 Destroy(this);
                 return;
@@ -35,7 +34,7 @@ namespace Sapo.DI.Runtime.Behaviours
                 return;
             }
 
-            var localInjector = FindObjectOfType<SGameObjectInjector>();
+            var localInjector = GetComponent<SGameObjectInjector>();
             if (localInjector != null)
             {
                 localInjector.Inject();

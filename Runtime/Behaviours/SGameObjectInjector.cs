@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Sapo.DI.Runtime.Attributes;
 using Sapo.DI.Runtime.Common;
+using Sapo.DI.Runtime.Core;
 using Sapo.DI.Runtime.Interfaces;
 using UnityEngine;
 

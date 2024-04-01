@@ -1,5 +1,6 @@
 using Sapo.DI.Editor.Common;
 using Sapo.DI.Runtime.Behaviours;
+using Sapo.DI.Runtime.Core;
 using UnityEditor;
 using UnityEngine;
 

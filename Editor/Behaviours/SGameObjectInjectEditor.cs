@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace Sapo.DI.Editor.Behaviours
 {
-    [CustomEditor(typeof(SGameObjectInject))]
+    [CustomEditor(typeof(SPrefabInject))]
     internal class SGameObjectInjectEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
