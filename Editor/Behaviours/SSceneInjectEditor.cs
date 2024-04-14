@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Sapo.DI.Editor.Behaviours
 {
+    [CanEditMultipleObjects]
     [CustomEditor(typeof(SSceneInject))]
     internal class SSceneInjectEditor : UnityEditor.Editor
     {

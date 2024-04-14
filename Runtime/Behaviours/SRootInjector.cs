@@ -65,8 +65,12 @@ namespace Sapo.DI.Runtime.Behaviours
             {
                 if (asset == null) continue;
                 if (!asset.GetType().IsDefinedWithAttribute<SRegister>(out var sRegister)) continue;
+
+                _injector.Register(sRegister.Type ?? asset.GetType(), asset);
+                if (!sRegister.RegisterAllInterfaces) continue;
                 
-                _injector.Register(sRegister.Type, asset);
+                foreach (var interfaceType in asset.GetType().GetInterfaces())
+                    _injector.Register(interfaceType, asset);
             }
 
             foreach (var handler in assetsToRegister.OfType<ISInjectorRegisterHandler>()) handler.OnRegister(_injector);
@@ -91,12 +95,16 @@ namespace Sapo.DI.Runtime.Behaviours
             
             foreach (var root in roots)
             {
-                foreach (var injector in root.GetComponentsInChildren<SGameObjectInjector>(true))
-                    localInjectors.Add(injector.gameObject, injector.Injector);
+                foreach (var injector in root.GetComponentsInChildren<SGameObjectInject>(true)
+                             .Where(i => i.CreateLocalInjector))
+                    localInjectors.Add(injector.gameObject, new SInjector(Injector));
                 
                 foreach (var (componentT, registerT) in reflectionCache.RegistrableComponents)
                 foreach (var component in root.GetComponentsInChildren(componentT, true))
-                    localInjectors.GetValueOrDefault(component.gameObject, _injector).Register(registerT, component);
+                {
+                    var injector = localInjectors.GetValueOrDefault(component.gameObject, _injector);
+                    foreach (var type in registerT) injector.Register(type, component);
+                }
 
                 registerHandlers.AddRange(root.GetComponentsInChildren<ISInjectorRegisterHandler>(true));
                 injectHandlers.AddRange(root.GetComponentsInChildren<ISInjectorInjectHandler>(true));
@@ -107,7 +115,8 @@ namespace Sapo.DI.Runtime.Behaviours
             {
                 foreach (var (componentT, registerT) in reflectionCache.RegistrableComponents)
                 foreach (var component in GetComponents(componentT))
-                    _injector.Register(registerT, component);
+                foreach (var type in registerT)
+                    _injector.Register(type, component);
                 
                 registerHandlers.AddRange(GetComponents<ISInjectorRegisterHandler>());
                 injectHandlers.AddRange(GetComponents<ISInjectorInjectHandler>());
@@ -139,15 +148,19 @@ namespace Sapo.DI.Runtime.Behaviours
             Initialize();
             var reflectionCache = SInjector.ReflectionCache;
 
-            var localInjectors = obj.GetComponentsInChildren<SGameObjectInjector>(true)
-                .ToDictionary(i => i.gameObject, i => i.Injector);
+            var localInjectors = obj.GetComponentsInChildren<SGameObjectInject>(true)
+                .Where(s => s.CreateLocalInjector)
+                .ToDictionary(i => i.gameObject, _ => new SInjector(Injector));
 
             var registerHandlers = obj.GetComponentsInChildren<ISInjectorRegisterHandler>(true);
             var injectHandlers = obj.GetComponentsInChildren<ISInjectorInjectHandler>(true);
             
             foreach (var (componentT, registerT) in reflectionCache.RegistrableComponents)
             foreach (var component in obj.GetComponentsInChildren(componentT, true))
-                localInjectors.GetValueOrDefault(component.gameObject, _injector).Register(registerT, component);
+            {
+                var injector = localInjectors.GetValueOrDefault(component.gameObject, _injector);
+                foreach (var type in registerT) injector.Register(type, component);
+            }
 
             foreach (var handler in registerHandlers) handler.OnRegister(_injector);
             
@@ -157,5 +170,17 @@ namespace Sapo.DI.Runtime.Behaviours
             
             foreach (var handler in injectHandlers) handler.OnInject(_injector);
         }
+
+        internal static SRootInjector FindOrCreateSingleton()
+        {
+            var i = FindObjectOfType<SRootInjector>();
+            if (i != null) return i;
+
+            return new GameObject("Root Injector").AddComponent<SRootInjector>();
+        }
+        
+        internal static SRootInjector FindSingleton() => FindObjectOfType<SRootInjector>();
+        
+        
     }
 }

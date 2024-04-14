@@ -32,7 +32,7 @@ namespace Sapo.DI.Samples.Testing.Tests.Runtime
             // Arrange
             var playerG = _gHelper.CreateG<Player>();
             var player = playerG.GetComponent<Player>();
-            var injector = new STestGamObjectInjector(playerG);
+            var injector = new STestGameObjectInjector(playerG);
             
             var health = new TestHealth { Value = 100 };
             injector.Register<IHealth>(health);

@@ -15,9 +15,16 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
     {
         private readonly List<GameObject> _gameObjects = new();
         
+        [SetUp]
         [TearDown]
-        public void TearDown()
+        public void ClearHierarchy()
         {
+            foreach (var g in Object.FindObjectsOfType<SRootInjector>()) 
+                Object.DestroyImmediate(g.gameObject);
+
+            foreach (var g in Object.FindObjectsOfType<SSceneInject>())
+                Object.DestroyImmediate(g.gameObject);
+            
             foreach (var go in _gameObjects)
             {
                 if (go == null) continue;

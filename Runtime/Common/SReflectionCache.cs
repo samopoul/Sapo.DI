@@ -10,7 +10,7 @@ namespace Sapo.DI.Runtime.Common
 {
     internal class SReflectionCache : ISReflectionCache
     {
-        public (Type componentType, Type registerType)[] RegistrableComponents { get; private set; }
+        public (Type componentType, Type[] registerTypes)[] RegistrableComponents { get; private set; }
         
         public Type[] InjectableComponents { get; private set; }
 
@@ -23,13 +23,13 @@ namespace Sapo.DI.Runtime.Common
             var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.SafelyGetTypes())
                 .Where(t => component.IsAssignableFrom(t));
             
-            var registrableComponents = new List<(Type componentType, Type registerType)>();
+            var registrableComponents = new List<(Type componentType, Type[] registerTypes)>();
             var injectableComponents = new List<Type>();
             
             foreach (var type in components)
             {
                 if (type.IsDefinedWithAttribute<SRegister>(out var sRegister))
-                    registrableComponents.Add((type, sRegister.Type));
+                    registrableComponents.Add((type, GetRegistererTypes(type, sRegister).ToArray()));
 
                 var injectFields = type.GetInjectFields().ToArray();
                 if (injectFields.IsEmpty()) continue;
@@ -40,6 +40,16 @@ namespace Sapo.DI.Runtime.Common
             
             RegistrableComponents = registrableComponents.ToArray();
             InjectableComponents = injectableComponents.ToArray();
+        }
+        
+        private IEnumerable<Type> GetRegistererTypes(Type type, SRegister attribute)
+        {
+            if (attribute.Type == null) yield return type;
+            else yield return attribute.Type;
+            
+            if (!attribute.RegisterAllInterfaces) yield break;
+
+            foreach (var interfaceType in type.GetInterfaces()) yield return interfaceType;
         }
         
         public FieldInfo[] GetInjectFields(Type type)

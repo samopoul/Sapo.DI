@@ -11,7 +11,7 @@ using Is = Sapo.DI.Tests.Runtime.Helpers.Is;
 namespace Sapo.DI.Tests.Runtime.Behaviours
 {
     [TestFixture]
-    internal class SPrefabInjectTests
+    internal class SGameObjectInjectTests
     {
         private readonly List<GameObject> _gameObjects = new();
         
@@ -43,7 +43,7 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             // Arrange
             LogAssert.ignoreFailingMessages = true;
             var g = NewG(false);
-            var inject = g.AddComponent<SPrefabInject>();
+            var inject = g.AddComponent<SGameObjectInject>();
             
             // Act
             g.SetActive(true);
@@ -60,7 +60,7 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             // Arrange
             var injector = NewG().AddComponent<SRootInjector>();
             var g = NewG(false);
-            var inject = g.AddComponent<SPrefabInject>();
+            var inject = g.AddComponent<SGameObjectInject>();
             var service = g.AddComponent<ComponentServiceA>();
             
             // Act
@@ -75,12 +75,13 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
         }
 
         [UnityTest]
-        public IEnumerator Awake_WithGameObjectInjector_ShouldInjectAndDestroySelf()
+        public IEnumerator Awake_WithLocalInjector_ShouldInjectAndDestroySelf()
         {
             // Arrange
             var g = NewG(false);
-            var injector = g.AddComponent<SGameObjectInjector>();
-            var inject = g.AddComponent<SPrefabInject>();
+            var inject = g.AddComponent<SGameObjectInject>();
+            inject.CreateLocalInjector = true;
+            
             var service = g.AddComponent<ComponentServiceA>();
             var component = g.AddComponent<ComponentWithDependencyToA>();
 
@@ -91,18 +92,16 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             // Assert
             Assert.That(inject, Is.Destroyed);
             Assert.That(g, Is.Not.Destroyed());
-            Assert.That(injector.Injector.IsRegistered<IServiceA>(), Is.True);
-            Assert.That(injector.Injector.Resolve<IServiceA>(), Is.EqualTo(service));
             Assert.That(component.ServiceA, Is.EqualTo(service));
         }
 
         [UnityTest]
-        public IEnumerator Awake_WithGameObjectInjector_ShouldCallEvents_WithCorrectOrder()
+        public IEnumerator Awake_WithLocalInjector_WithGameObjectInjector_ShouldCallEvents_WithCorrectOrder()
         {
             // Arrange
             var g = NewG(false);
-            var injector = g.AddComponent<SGameObjectInjector>();
-            var inject = g.AddComponent<SPrefabInject>();
+            var inject = g.AddComponent<SGameObjectInject>();
+            inject.CreateLocalInjector = true;
             var component = g.AddComponent<ComponentWithEvents>();
             
             // Act
@@ -119,9 +118,11 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
         {
             // Arrange
             var g = NewG(false);
-            var injector = g.AddComponent<SGameObjectInjector>();
-            var inject = g.AddComponent<SPrefabInject>();
-            injector.Inject();
+            var inject = g.AddComponent<SGameObjectInject>();
+            inject.CreateLocalInjector = true;
+            
+            NewG().AddComponent<SRootInjector>();
+            yield return null;
 
             // Act
             g.SetActive(true);

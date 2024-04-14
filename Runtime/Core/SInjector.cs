@@ -134,5 +134,11 @@ namespace Sapo.DI.Runtime.Core
             foreach (var instance in _instances.Values) 
                 Inject(instance);
         }
+        
+        internal void ForceCopyFrom(SInjector injector)
+        {
+            foreach (var (type, instance) in injector._instances)
+                _instances[type] = instance;
+        }
     }
 }
