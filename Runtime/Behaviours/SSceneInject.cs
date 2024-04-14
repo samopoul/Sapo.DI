@@ -9,7 +9,7 @@ namespace Sapo.DI.Runtime.Behaviours
     /// </summary>
     [HelpURL("https://github.com/sapo-creations/sk.sapo.dependency-injection")]
     [DisplayName("Scene Inject")]
-    [AddComponentMenu("")]
+    [AddComponentMenu("Sapo/DI/Scene Inject")]
     [DisallowMultipleComponent]
     public sealed class SSceneInject : MonoBehaviour, ISInjectorRegisterHandler
     {
@@ -22,20 +22,20 @@ namespace Sapo.DI.Runtime.Behaviours
             if (_isInjected)
             {
                 Debug.LogError("[Sapo.DI] Scene already injected. Make sure you have only one SSceneInject per scene.");
-                Destroy(gameObject);
+                Destroy();
                 return;
             }
             
             var injector = SRootInjector.FindOrCreateSingleton();;
-            if (injector == null)
-            {
-                Debug.LogError("[Sapo.DI] Unable to inject scene, no SInjector found.");
-                Destroy(gameObject);
-                return;
-            }
-
             injector.InjectScene(gameObject.scene);
-            Destroy(gameObject);
+            
+            Destroy();
+        }
+
+        private void Destroy()
+        {
+            if (GetComponent<SRootInjector>() == null) Destroy(gameObject);
+            else Destroy(this);
         }
     }
 }

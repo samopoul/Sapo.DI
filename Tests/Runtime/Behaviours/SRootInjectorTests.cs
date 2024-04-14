@@ -50,7 +50,7 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             foreach (var g in Object.FindObjectsOfType<SRootInjector>()) 
                 Object.DestroyImmediate(g.gameObject);
 
-            foreach (var g in Object.FindObjectsOfType<SGameObjectInjector>())
+            foreach (var g in Object.FindObjectsOfType<SGameObjectInject>())
                 Object.DestroyImmediate(g.gameObject);
 
             foreach (var g in _gameObjects)
@@ -395,7 +395,9 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             // Arrange
             var injector = CreateInjector();
             
-            var gInjector = NewGWithComponent<SGameObjectInjector>(out var go);
+            var gInjector = NewGWithComponent<SGameObjectInject>(out var go);
+            gInjector.CreateLocalInjector = true;
+            
             var service = go.AddComponent<ComponentServiceA>();
             var component = go.AddComponent<ComponentWithDependencyToA>();
             
@@ -405,8 +407,6 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             
             // Assert
             Assert.That(injector.Injector.IsRegistered<IServiceA>(), Is.False);
-            Assert.That(gInjector.Injector.IsRegistered<IServiceA>(), Is.True);
-            Assert.That(gInjector.Injector.Resolve<IServiceA>(), Is.EqualTo(service));
             Assert.That(component.ServiceA, Is.EqualTo(service));
         }
         
@@ -487,7 +487,9 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             var injector = CreateInjector();
             var scene = SceneManager.GetActiveScene();
             
-            var gInjector = NewGWithComponent<SGameObjectInjector>(out var g);
+            var gInjector = NewGWithComponent<SGameObjectInject>(out var g);
+            gInjector.CreateLocalInjector = true;
+            
             var service = g.AddComponent<ComponentServiceA>();
             var component = g.AddComponent<ComponentWithDependencyToA>();
             
@@ -497,8 +499,6 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             
             // Assert
             Assert.That(injector.Injector.IsRegistered<IServiceA>(), Is.False);
-            Assert.That(gInjector.Injector.IsRegistered<IServiceA>(), Is.True);
-            Assert.That(gInjector.Injector.Resolve<IServiceA>(), Is.EqualTo(service));
             Assert.That(component.ServiceA, Is.EqualTo(service));
         }
 

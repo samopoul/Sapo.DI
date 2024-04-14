@@ -5,7 +5,7 @@ namespace Sapo.DI.Runtime.Interfaces
 {
     internal interface ISReflectionCache
     {
-        (Type componentType, Type registerType)[] RegistrableComponents { get; }
+        (Type componentType, Type[] registerTypes)[] RegistrableComponents { get; }
         
         Type[] InjectableComponents { get; }
         

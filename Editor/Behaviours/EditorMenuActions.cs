@@ -1,7 +1,6 @@
 using System.Linq;
 using Sapo.DI.Runtime.Behaviours;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +13,10 @@ namespace Sapo.DI.Editor.Behaviours
         {
             var g = new GameObject("Root Injector", typeof(SRootInjector));
             g.transform.hideFlags = HideFlags.HideInInspector;
+            
+            var scene = SceneManager.GetActiveScene();
+            if (Object.FindObjectsOfType<SSceneInject>().All(i => i.gameObject.scene != scene))
+                g.AddComponent<SSceneInject>();
             
             Selection.activeGameObject = g;
             Undo.RegisterCreatedObjectUndo(g, "Create Root Injector");

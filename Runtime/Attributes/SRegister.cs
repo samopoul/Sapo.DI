@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Sapo.DI.Runtime.Attributes
 {
@@ -29,10 +30,34 @@ namespace Sapo.DI.Runtime.Attributes
         /// </summary>
         public Type Type { get; }
         
+        public bool RegisterAllInterfaces { get; set; }
+
         /// <summary>
         /// Constructor for the SRegister attribute.
         /// </summary>
         /// <param name="type">A type that the Component/ScriptableObject implements.</param>
-        public SRegister(Type type) => Type = type;
+        /// <param name="registerAllInterfaces">If true, all interfaces that the class implements will be registered.</param>
+        public SRegister(Type type = null, bool registerAllInterfaces = false)
+        {
+            Type = type;
+            RegisterAllInterfaces = registerAllInterfaces;
+        }
+
+        /// <summary>
+        /// Constructor for the SRegister attribute.
+        /// </summary>
+        /// <param name="registerAllInterfaces">If true, all interfaces that the class implements will be registered.</param>
+        public SRegister(bool registerAllInterfaces = false)
+        {
+            RegisterAllInterfaces = registerAllInterfaces;
+        }
+        
+        /// <summary>
+        /// Constructor for the SRegister attribute.
+        /// </summary>
+        public SRegister()
+        {
+            
+        }
     }
 }
