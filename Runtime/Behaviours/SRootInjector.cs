@@ -157,5 +157,17 @@ namespace Sapo.DI.Runtime.Behaviours
             
             foreach (var handler in injectHandlers) handler.OnInject(_injector);
         }
+
+        internal static SRootInjector FindOrCreateSingleton()
+        {
+            var i = FindObjectOfType<SRootInjector>();
+            if (i != null) return i;
+
+            return new GameObject("Root Injector").AddComponent<SRootInjector>();
+        }
+        
+        internal static SRootInjector FindSingleton() => FindObjectOfType<SRootInjector>();
+        
+        
     }
 }

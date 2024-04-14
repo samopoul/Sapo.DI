@@ -25,8 +25,8 @@ namespace Sapo.DI.Runtime.Behaviours
                 Destroy(this);
                 return;
             }
-            
-            var injector = FindObjectOfType<SRootInjector>();
+
+            var injector = SRootInjector.FindSingleton();
             if (injector != null)
             {
                 injector.InjectGameObject(gameObject);

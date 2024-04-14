@@ -26,7 +26,7 @@ namespace Sapo.DI.Runtime.Behaviours
                 return;
             }
             
-            var injector = FindObjectOfType<SRootInjector>();
+            var injector = SRootInjector.FindOrCreateSingleton();;
             if (injector == null)
             {
                 Debug.LogError("[Sapo.DI] Unable to inject scene, no SInjector found.");
