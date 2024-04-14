@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Sapo.DI.Runtime.Behaviours;
@@ -20,6 +21,8 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
         {
             var g = new GameObject("Root Injector");
             g.SetActive(false);
+
+            _gameObjects.Add(g);
             return g.AddComponent<SRootInjector>();
         }
 
@@ -44,8 +47,9 @@ namespace Sapo.DI.Tests.Runtime.Behaviours
             return g.AddComponent<T>();
         }
         
+        [SetUp]
         [TearDown]
-        public void TearDown()
+        public void ClearHierarchy()
         {
             foreach (var g in Object.FindObjectsOfType<SRootInjector>()) 
                 Object.DestroyImmediate(g.gameObject);
