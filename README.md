@@ -16,6 +16,8 @@ reference to your assembly definition file. If you are not using assembly defini
 - <span style="color:green">&#10003;</span> Simple and easy to use
 - <span style="color:green">&#10003;</span> Supports DI for scenes and prefabs
 - <span style="color:green">&#10003;</span> Allows for persistent objects across scenes
+- <span style="color:green">&#10003;</span> Supports Components
+- <span style="color:green">&#10003;</span> Supports Scriptable Objects
 - <span style="color:green">&#10003;</span> Supports .net objects
 - <span style="color:green">&#10003;</span> Supports circular dependencies
 - <span style="color:green">&#10003;</span> Includes testing helpers
@@ -123,19 +125,11 @@ This component will schedule injection on this gameObject and all its children. 
 will be destroyed. To add `GameObject Inject` to prefab, click on `Add Component` and search for `GameObject Inject` or 
 select `Sapo/DI/GameObject Inject` in context menu.
 
-### GameObject Injector
+In `GameObject Inject` component, we can also see a `Local Injector` toggle. If this is checked, `GameObject Inject` will
+create a new injector that will be used only for this gameObject. This is useful when we want to have services that are only
+available to specific gameObject. We can register to `Local Injector` both component services and scriptable object services as well.
 
-`GameObject Injector` is a component that can be used to inject dependencies on a specific gameObject. This is another
-approach on how to inject dependencies on a gameObject. `GameObject Injector` can be used without `Root Injector`, however 
-to inject dependencies on a gameObject, `GameObject Inject` must be added next to `GameObject Injector`. Please note that 
-`GameObject Injector` will *only* inject dependencies on the gameObject on which is attached.
-
-[![GameObject Injector Image](Documentation~/game-object-injector.png)](Documentation~/game-object-injector.png)
-
-When we use `GameObject Injector`, and `Root Injector` is set up in the scene. `Root Injector` is parent of `GameObject Injector`. 
-That means that registered services in `Root Injector` are available to `GameObject Injector`. Nevertheless, `GameObject Injector`
-can have its own services registered. This is useful when we want to have services that are only available to specific gameObject. 
-We can register to `GameObject Injector` both component services and scriptable object services as well.
+[![GameObject Inject Image](Documentation~/game-object-inject.png)](Documentation~/game-object-inject.png)
 
 ### Custom Injection
 
@@ -257,12 +251,14 @@ You will see `Samples` section where you can install samples.
 
 ## Injection Pipeline
 
+> Please keep in mind that this framework is heavily using reflection to register and inject dependencies.
+> Also this framework can have a big performance peeks when loading huge scenes.
+
 When a scene a scene is loaded or a prefab is spawned, the injection pipeline is executed.
 
 [![Injection Pipeline Image](Documentation~/injection-pipeline.png)](Documentation~/injection-pipeline.png)
 
-The initialization phase, which is responsible for registering service assets, is executed only once. This 
-occurs either on the root injector or on the gameObject injector.
+The initialization phase, which is responsible for registering service assets, is executed only once on root injector.
 
 ## License
 
