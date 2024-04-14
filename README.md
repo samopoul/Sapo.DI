@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 # SInject
-SInject is a lightweight dependency injection framework for unity. It is designed to be simple and easy to use. 
+SInject is a dependency injection framework for unity. It is designed to be simple and easy to use. 
 It is based on the concept of injectors and services. It is designed to be used in a way that is easy to understand and use. 
 It also includes a testing framework that makes it easy to write tests for your code. Make sure to check out the samples to see how to use it.
 
