@@ -5,6 +5,7 @@ using System.Reflection;
 using Sapo.DI.Runtime.Attributes;
 using Sapo.DI.Runtime.Interfaces;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Sapo.DI.Runtime.Common
 {
@@ -20,7 +21,8 @@ namespace Sapo.DI.Runtime.Common
         {
             var component = typeof(Component);
 
-            var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.SafelyGetTypes())
+            var components = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.SafelyGetTypes())
                 .Where(t => component.IsAssignableFrom(t));
             
             var registrableComponents = new List<(Type componentType, Type[] registerTypes)>();
@@ -56,10 +58,24 @@ namespace Sapo.DI.Runtime.Common
         {
             if (_injectFieldsCache.TryGetValue(type, out var fields)) return fields;
 
-            fields = type.GetInjectFields().ToArray();
-            _injectFieldsCache[type] = fields;
+            fields = ReflectInjectFields(type).ToArray();
             
+            _injectFieldsCache[type] = fields;
             return fields;
         }
+
+        private IEnumerable<FieldInfo> ReflectInjectFields(Type type)
+        {
+            var fields = type.GetInjectFields();
+            
+            var baseType = type.BaseType;
+            if (baseType == null) return fields;
+            if (baseType == typeof(object)) return fields;
+            if (baseType == typeof(Object)) return fields;
+
+            return fields.Concat(GetInjectFields(baseType));
+        }
+        
+        
     }
 }
