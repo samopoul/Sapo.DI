@@ -10,8 +10,7 @@ namespace Sapo.DI.Runtime.Attributes
     /// <code>
     /// public class MyClass
     /// {
-    ///     [SInject]
-    ///     private MyDependency _myDependency;
+    ///     [SInject] private MyDependency _myDependency;
     /// }
     /// </code>
     /// </example>
