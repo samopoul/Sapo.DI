@@ -34,10 +34,11 @@ namespace Sapo.DI.Editor.Attributes
             if (!target.GetType().IsDefinedWithAttribute<SRegister>(out var attribute)) return;
             
             _style ??= new GUIStyle(EditorStyles.helpBox) { richText = true };
+            var type = attribute.Type ?? target.GetType();
             EditorGUILayout.LabelField(
                 target is Component
-                    ? $"Component registered as <color=#FF8000>{attribute.Type.Name}</color>"
-                    : $"Object can be registered as <color=#FF8000>{attribute.Type.Name}</color>", _style);
+                    ? $"Component registered as <color=#FF8000>{type}</color>"
+                    : $"Object can be registered as <color=#FF8000>{type}</color>", _style);
         }
 
 
