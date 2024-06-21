@@ -11,7 +11,8 @@ namespace Sapo.DI.Runtime.Interfaces
         
         void Build();
         
+        Type[] GetRegisterTypes(Type type);
+        
         FieldInfo[] GetInjectFields(Type type);
-
     }
 }
