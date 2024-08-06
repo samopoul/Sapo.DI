@@ -7,7 +7,7 @@ namespace Sapo.DI.Runtime.Behaviours
     /// <summary>
     /// Scene Inject is a component that injects entire scene during scene load.
     /// </summary>
-    [HelpURL("https://github.com/sapo-creations/sk.sapo.dependency-injection")]
+    [HelpURL("https://github.com/samopoul/Sapo.DI")]
     [DisplayName("Scene Inject")]
     [AddComponentMenu("Sapo/DI/Scene Inject")]
     [DisallowMultipleComponent]

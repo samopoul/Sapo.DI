@@ -85,8 +85,7 @@ namespace Sapo.DI.Editor.Attributes
         }
         
 
-
-
+        
         private static IEnumerable<string> GetRegisterTypes(Object target)
         {
             if (_isReflectionCacheBuilding)
