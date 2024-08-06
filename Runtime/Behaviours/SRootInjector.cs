@@ -15,7 +15,7 @@ namespace Sapo.DI.Runtime.Behaviours
     /// <summary>
     /// A root injector that initializes the dependency injection system and injects dependencies in the scene.
     /// </summary>
-    [HelpURL("https://github.com/sapo-creations/sk.sapo.dependency-injection")]
+    [HelpURL("https://github.com/samopoul/Sapo.DI")]
     [DisplayName("Root Injector")]
     [AddComponentMenu("")]
     [DisallowMultipleComponent]
