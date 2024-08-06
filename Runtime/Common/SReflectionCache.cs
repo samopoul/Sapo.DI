@@ -65,11 +65,7 @@ namespace Sapo.DI.Runtime.Common
                 if (attribute.Type != null) result = result.Append(attribute.Type);
                 result = result.Concat(type.GetInterfaces());
             }
-
-            var baseType = type.BaseType;
-            if (CannotReflect(baseType)) return result;
-
-            result = result.Concat(ReflectRegisterTypes(baseType));
+            
             return result.Distinct();
         }
 
