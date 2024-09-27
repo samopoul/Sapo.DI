@@ -176,7 +176,9 @@ namespace Sapo.DI.Runtime.Behaviours
             var i = FindObjectOfType<SRootInjector>();
             if (i != null) return i;
 
-            return new GameObject("Root Injector").AddComponent<SRootInjector>();
+            var g = new GameObject("Root Injector");
+            DontDestroyOnLoad(g);
+            return g.AddComponent<SRootInjector>();
         }
         
         internal static SRootInjector FindSingleton() => FindObjectOfType<SRootInjector>();
