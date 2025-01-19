@@ -16,7 +16,7 @@ reference to your assembly definition file. If you are not using assembly defini
 - <span style="color:green">&#10003;</span> Simple and easy to use
 - <span style="color:green">&#10003;</span> Supports DI for scenes and prefabs
 - <span style="color:green">&#10003;</span> Allows for persistent objects across scenes
-- <span style="color:green">&#10003;</span> Supports Components
+- <span style="color:green">&#10003;</span> Supports Components injection
 - <span style="color:green">&#10003;</span> Supports Scriptable Objects
 - <span style="color:green">&#10003;</span> Supports .net objects
 - <span style="color:green">&#10003;</span> Supports circular dependencies
@@ -72,7 +72,7 @@ Now in unity, create this scriptable object and drag it to the `Assets to regist
 
 [![Root Injector Image](Documentation~/service-a.png)](Documentation~/service-a.png)
 
-### Setup a Component service
+### Set up a Component service
 
 In order to inject a component, we need to define it with `SRegister` attribute.
 ```csharp
@@ -117,6 +117,27 @@ In this point, we can create a prefab with `Player` script attached to it and wh
 Hello, I am ServiceA!
 Hello, I am ServiceB!
 ```
+
+### Injecting components
+
+SInject also includes similar attribute `CInject` for injecting components that are attached to the same gameObject.
+```csharp
+using Sapo.DI.Runtime.Attributes;
+
+public class Player : MonoBehaviour
+{
+    [CInject] private IServiceB _serviceB;
+
+    private void Awake()
+    {
+        _serviceB.Introduce();
+    }
+}
+```
+This will inject `ServiceB` component that is attached to the same gameObject as `Player` component. 
+And the service does not need to be registered in DI
+
+> This will only work if `Scene Inject` is in the scene or `GameObject Inject` is on the player gameObject.
 
 ### Spawning prefabs with dependencies
 
@@ -239,7 +260,7 @@ Here is a self-explanatory example of how to test a component that uses dependen
  }
 ```
 
-> Please not that if you want to use test injector helpers, you will need to add `Sapo.DI.Runtime.Tests` assembly reference to your test assembly definition file.
+> Please note that if you want to use test injector helpers, you will need to add `Sapo.DI.Runtime.Tests` assembly reference to your test assembly definition file.
 > For more information about testing, you can check `Testing` sample.
 
 ## Samples
