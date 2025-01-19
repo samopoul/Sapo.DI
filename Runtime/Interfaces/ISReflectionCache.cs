@@ -13,6 +13,8 @@ namespace Sapo.DI.Runtime.Interfaces
         
         Type[] GetRegisterTypes(Type type);
         
-        FieldInfo[] GetInjectFields(Type type);
+        FieldInfo[] GetSInjectFields(Type type);
+
+        FieldInfo[] GetCInjectFields(Type type);
     }
 }

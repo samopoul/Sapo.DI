@@ -11,13 +11,14 @@ namespace Sapo.DI.Runtime.Common
 {
     internal class SReflectionCache : ISReflectionCache
     {
-        private Dictionary<Type, Type[]> _registrableTypesCache = new();
+        private readonly Dictionary<Type, Type[]> _registrableTypesCache = new();
         
         public (Type componentType, Type[] registerTypes)[] RegistrableComponents { get; private set; }
         
         public Type[] InjectableComponents { get; private set; }
 
-        private readonly Dictionary<Type, FieldInfo[]> _injectFieldsCache = new();
+        private readonly SFieldReflectionCache<SInjectAttribute> _sInjectFieldsCache = new();
+        private readonly SFieldReflectionCache<CInjectAttribute> _cInjectFieldsCache = new();
 
         public void Build()
         {
@@ -36,11 +37,8 @@ namespace Sapo.DI.Runtime.Common
                 if (isRegistrable) _registrableTypesCache[type] = ReflectRegisterTypes(type).ToArray();
                 if (isRegistrable && isComponent) registrableComponents.Add((type, GetRegisterTypes(type)));
 
-                var injectFields = ReflectInjectFields(type).ToArray();
-                if (injectFields.IsEmpty()) continue;
-
-                _injectFieldsCache[type] = injectFields;
-                if (isComponent) injectableComponents.Add(type);
+                var injectable = _sInjectFieldsCache.Build(type) || _cInjectFieldsCache.Build(type);
+                if (injectable && isComponent) injectableComponents.Add(type);
             }
             
             RegistrableComponents = registrableComponents.ToArray();
@@ -69,21 +67,8 @@ namespace Sapo.DI.Runtime.Common
             return result.Distinct();
         }
 
-        public FieldInfo[] GetInjectFields(Type type) =>
-            _injectFieldsCache.GetValueOrDefault(type, Array.Empty<FieldInfo>());
-
-        private IEnumerable<FieldInfo> ReflectInjectFields(Type type)
-        {
-            var fields = type.GetInjectFields();
-            
-            var baseType = type.BaseType;
-            if (CannotReflect(baseType)) return fields;
-            
-            return fields.Concat(ReflectInjectFields(baseType));
-        }
-
-        private bool CannotReflect(Type type) => type == null || type == typeof(object) || type == typeof(Object);
-
-
+        public FieldInfo[] GetSInjectFields(Type type) => _sInjectFieldsCache.GetFields(type);
+        
+        public FieldInfo[] GetCInjectFields(Type type) => _cInjectFieldsCache.GetFields(type);
     }
 }

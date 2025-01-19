@@ -122,11 +122,28 @@ namespace Sapo.DI.Runtime.Core
 
         public void Inject(object instance)
         {
+            TryInjectDependencies(instance);
+            TryInjectComponents(instance);
+        }
+
+        private void TryInjectDependencies(object instance)
+        {
             var type = instance.GetType();
-            var fields = ReflectionCache.GetInjectFields(type);
+            var fields = ReflectionCache.GetSInjectFields(type);
             if (fields.IsEmpty()) return;
 
             foreach (var field in fields) field.SetValue(instance, Resolve(field.FieldType));
+        }
+        
+        private void TryInjectComponents(object instance)
+        {
+            var type = instance.GetType();
+            if (instance is not Component component) return;
+            
+            var fields = ReflectionCache.GetCInjectFields(type);
+            if (fields.IsEmpty()) return;
+
+            foreach (var field in fields) field.SetValue(instance, component.GetComponent(field.FieldType));
         }
 
         internal void PerformSelfInjection()

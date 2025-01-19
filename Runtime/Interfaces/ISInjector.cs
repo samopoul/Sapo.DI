@@ -1,4 +1,5 @@
 using System;
+using Sapo.DI.Runtime.Attributes;
 
 namespace Sapo.DI.Runtime.Interfaces
 {
@@ -99,7 +100,7 @@ namespace Sapo.DI.Runtime.Interfaces
         public void Unregister(Type type, object instance);
 
         /// <summary>
-        /// Injects dependencies into the specified instance. All fields defined with <see cref="Attributes.SInject"/> will be injected.
+        /// Injects dependencies into the specified instance. All fields defined with <see cref="SInjectAttribute"/> will be injected.
         /// </summary>
         /// <param name="instance">The instance to inject.</param>
         public void Inject(object instance);

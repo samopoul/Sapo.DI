@@ -3,10 +3,10 @@ using System;
 namespace Sapo.DI.Runtime.Attributes
 {
     /// <summary>
-    /// The SInject attribute is used to mark fields that should be injected.
+    /// The SInjectAttribute attribute is used to mark fields that should be injected.
     /// </summary>
     /// <example>
-    /// This sample shows how to use the SInject attribute.
+    /// This sample shows how to use the SInjectAttribute attribute.
     /// <code>
     /// public class MyClass
     /// {
@@ -15,7 +15,7 @@ namespace Sapo.DI.Runtime.Attributes
     /// </code>
     /// </example>
     [AttributeUsage(AttributeTargets.Field)]
-    public sealed class SInject : Attribute
+    public sealed class SInjectAttribute : Attribute
     {
         
     }

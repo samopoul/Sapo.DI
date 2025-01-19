@@ -40,12 +40,12 @@ namespace Sapo.DI.Runtime.Common
             return null;
         }
 
-        internal static IEnumerable<FieldInfo> GetInjectFields(this Type type)
+        internal static IEnumerable<FieldInfo> GetFieldsWithAttribute<TAttribute>(this Type type) where TAttribute : Attribute
         {
             const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance |
                                        BindingFlags.FlattenHierarchy;
 
-            return type.GetFields(flags).Where(f => f.IsDefinedWithAttribute<Attributes.SInject>());
+            return type.GetFields(flags).Where(f => f.IsDefinedWithAttribute<TAttribute>());
         }
         
         internal static IEnumerable<Type> SafelyGetTypes(this Assembly assembly)

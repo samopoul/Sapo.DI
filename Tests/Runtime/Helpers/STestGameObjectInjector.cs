@@ -16,8 +16,8 @@ namespace Sapo.DI.Tests.Runtime.Helpers
 
         /// <summary>
         /// Creates a <see cref="SGameObjectInject"/> on the given game object.
-        /// Please make sure that the game object is so-called 'uninitialized' that means that
-        /// is was disabled before adding components to it. Otherwise, the injector will not inject
+        /// Please make sure that the game object is so-called 'uninitialized' which means that
+        /// it was disabled before adding components to it. Otherwise, the injector will not inject
         /// the game object.
         /// </summary>
         /// <param name="gameObject">The game object to inject.</param>
